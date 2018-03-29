@@ -9,7 +9,7 @@ wget https://raw.githubusercontent.com/lukapaunovic/create_wp/master/create_wp.s
 ### Usage
 
 ```
-./create_wp yourdomain.com email
+usage: create_wp domain [email]
 ```
 
 ## Authors
