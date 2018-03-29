@@ -27,6 +27,14 @@ if [ ! -d "/home/$user/web/$domain/public_html" ]; then
     exit 1;
 fi
 
+if [ ! -f "/home/$user/conf/web/ssl.$domain.pem" ]; then
+    v-add-letsencrypt-domain "$user" "$domain" "" "yes"
+
+    if [ -f "/usr/local/vesta/data/templates/web/nginx/force-https.stpl" ]; then
+        v-change-web-domain-proxy-tpl  "$user" "$domain" "force-https" "jpeg,jpg,png,gif,bmp,ico,svg,tif,tiff,css,js,htm,html,ttf,otf,webp,woff,txt,csv,rtf,doc,docx,xls,xlsx,ppt,pptx,odf,odp,ods,odt,pdf,psd,ai,eot,eps,ps,zip,tar,tgz,gz,rar,bz2,7z,aac,m4a,mp3,mp4,ogg,wav,wma,3gp,avi,flv,m4v,mkv,mov,mpeg,mpg,wmv,exe,iso,dmg,swf" "no"
+    fi
+fi
+
 WORKINGDIR="/home/$user/web/$domain/public_html"
 # FILE=latest.tar.gz
 
@@ -66,16 +74,16 @@ sudo -H -u$user /home/$user/wp core install --url="$domain" --title="$domain" --
 
 #FIX za https://github.com/wp-cli/wp-cli/issues/2632
 
-mysql -u$DBUSER -p$PASSWDDB -e "USE $DBUSER; update wp_options set option_value = 'http://$domain' where option_name = 'siteurl'; update wp_options set option_value = 'http://$domain' where option_name = 'home';"
+mysql -u$DBUSER -p$PASSWDDB -e "USE $DBUSER; update wp_options set option_value = 'https://$domain' where option_name = 'siteurl'; update wp_options set option_value = 'https://$domain' where option_name = 'home';"
 
 # clear
 
 echo "================================================================="
 echo "Installation is complete. Your username/password is listed below."
 echo ""
-echo "Site: http://$domain/"
+echo "Site: https://$domain/"
 echo ""
-echo "Login: http://$domain/wp-admin/"
+echo "Login: https://$domain/wp-admin/"
 echo "Username: admin"
 echo "Password: $password"
 echo ""
