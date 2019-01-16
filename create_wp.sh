@@ -65,12 +65,12 @@ sudo mv wp-cli.phar wp
 
 cd /home/$user/web/$domain/public_html
 
-sudo -H -u$user php -d disabled_functions="" /home/$user/wp core download
-sudo -H -u$user php -d disabled_functions="" /home/$user/wp core config --dbname=$DBUSER --dbuser=$DBUSER --dbpass=$PASSWDDB
+sudo -H -u$user php -d disable_functions="" /home/$user/wp core download
+sudo -H -u$user php -d disable_functions="" /home/$user/wp core config --dbname=$DBUSER --dbuser=$DBUSER --dbpass=$PASSWDDB
 
 password=$(LC_CTYPE=C tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= < /dev/urandom | head -c 12)
 
-sudo -H -u$user php -d disabled_functions="" /home/$user/wp core install --url="$domain" --title="$domain" --admin_user="admin" --admin_password="$password" --admin_email="$email" --path=$WORKINGDIR
+sudo -H -u$user php -d disable_functions="" /home/$user/wp core install --url="$domain" --title="$domain" --admin_user="admin" --admin_password="$password" --admin_email="$email" --path=$WORKINGDIR
 
 #FIX za https://github.com/wp-cli/wp-cli/issues/2632
 
